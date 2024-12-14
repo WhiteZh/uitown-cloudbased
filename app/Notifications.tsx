@@ -8,7 +8,7 @@ export default function Notifications({notifications, setNotificationsAction}: {
     setNotificationsAction: Dispatch<Notification[]>,
 }) {
     return (
-        <div className="absolute z-[1000] w-full">
+        <div className="absolute z-50 w-full">
             {notifications.map(e => (
                 <div
                     className={`text-center py-1.5 px-0 opacity-80 relative`}

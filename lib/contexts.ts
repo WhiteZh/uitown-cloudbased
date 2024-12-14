@@ -5,5 +5,18 @@ export type Notification = {
     color?: string,
 }
 
-export const SetNotifications = createContext<Dispatch<Notification[]>>(undefined as any);
+export type User = {
+    id: number,
+    name: string,
+    email: string,
+    password_hashed: string,
+    description: string,
+    icon: string | null,
+};
 
+export const SetNotificationsContext = createContext<Dispatch<Notification[]>>(undefined as any);
+
+export const UserAndSetUserContext = createContext<{
+    user: User | null,
+    setUser: Dispatch<User | null>
+}>(undefined as any);

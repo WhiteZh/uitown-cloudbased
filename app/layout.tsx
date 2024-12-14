@@ -1,5 +1,6 @@
 import type {Metadata} from "next";
 import "./globals.css";
+import "bootstrap-icons/font/bootstrap-icons.min.css";
 import StatefulLayout from "@/app/StatefulLayout";
 import {ReactNode} from "react";
 
@@ -19,10 +20,6 @@ export default function RootLayout({
     return (
         <html lang="en">
         <head>
-            <link
-                href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
-                rel="stylesheet"
-            />
             <link rel="icon" href="/favicon.png" sizes="any"/>
         </head>
         <body className={`antialiased font-[Arial]`}>
