@@ -9,7 +9,7 @@ import NotificationBar from "@/app/NotificationBar";
 export default function StatefulLayout({children}: {
     children: ReactNode
 }) {
-    const [notifications, setNotifications] = useState<Notification[]>([{message: 'hi'}]);
+    const [notifications, setNotifications] = useState<Notification[]>([]);
 
     return (
         <div className="@apply font-[Arial] bg-[linear-gradient(135deg,black,#737373)] min-h-screen max-h-screen overflow-auto [scrollbar-width: none]">
