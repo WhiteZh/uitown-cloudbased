@@ -25,14 +25,14 @@ export default function LoginWindow({onCloseAction}: {
                         <input placeholder="username/email"
                                className="h-11 w-80 rounded-full my-1.5 ms-1.5 outline-0 ps-0.5 font-mono text-xs text-center"
                                ref={emailInput}
-                               onKeyDown={e => {if (e.key == 'Enter') passwordInput.current?.focus()}}
+                               onKeyDown={e => e.key == 'Enter' && passwordInput.current?.focus()}
                         />
                     </div>
                     <div className="flex flex-row mb-3 justify-center">
                         <input placeholder="password" type="password"
                                className="h-11 w-80 rounded-full my-1.5 ms-1.5 outline-0 ps-0.5 font-mono text-xs text-center"
                                ref={passwordInput}
-                               onKeyDown={e => {if (e.key == 'Enter') login()}}
+                               onKeyDown={e => e.key == 'Enter' && login()}
                         />
                     </div>
                     <button

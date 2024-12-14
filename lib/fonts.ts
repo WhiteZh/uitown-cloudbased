@@ -10,4 +10,5 @@ export const coolJazzFont = localFont({
 export const zhiMangXingFont = Zhi_Mang_Xing({
     weight: "400",
     style: "normal",
+    subsets: ['latin'],
 })
