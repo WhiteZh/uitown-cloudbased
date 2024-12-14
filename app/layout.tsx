@@ -1,6 +1,6 @@
 import type {Metadata} from "next";
 import "./globals.css";
-import Layout from "@/app/(client)/layout";
+import StatefulLayout from "@/app/StatefulLayout";
 import {ReactNode} from "react";
 
 export const metadata: Metadata = {
@@ -23,9 +23,9 @@ export default function RootLayout({
             />
         </head>
         <body className={`antialiased font-[Arial]`}>
-            <div className="@apply font-[Arial] bg-[linear-gradient(135deg,black,#737373)] min-h-screen max-h-screen overflow-auto [scrollbar-width: none]">
+            <StatefulLayout>
                 {children}
-            </div>
+            </StatefulLayout>
         </body>
         </html>
 );
