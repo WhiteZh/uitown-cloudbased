@@ -1,0 +1,5 @@
+.house_of_ui_img {
+    background: url("/house_of_ui.png") no-repeat;
+    background-size: auto 100%;
+    background-position-x: center;
+}
