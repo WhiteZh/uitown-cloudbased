@@ -3,7 +3,7 @@
 import {Notification} from "@/lib/contexts";
 import {Dispatch} from "react";
 
-export default function NotificationBar({notifications, setNotificationsAction}: {
+export default function Notifications({notifications, setNotificationsAction}: {
     notifications: Notification[],
     setNotificationsAction: Dispatch<Notification[]>,
 }) {
