@@ -14,7 +14,10 @@ export type User = {
     icon: string | null,
 };
 
-export const SetNotificationsContext = createContext<Dispatch<Notification[]>>(undefined as any);
+export const NotificationsAndSetNotificationsContext = createContext<{
+    notifications: Notification[],
+    setNotifications: Dispatch<Notification[]>
+}>(undefined as any);
 
 export const UserAndSetUserContext = createContext<{
     user: User | null,

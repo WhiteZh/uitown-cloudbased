@@ -3,6 +3,7 @@ import "./globals.css";
 import "bootstrap-icons/font/bootstrap-icons.min.css";
 import StatefulLayout from "@/app/StatefulLayout";
 import {ReactNode} from "react";
+import {robotoFont} from "@/lib/fonts";
 
 export const metadata: Metadata = {
     title: {
@@ -22,7 +23,7 @@ export default function RootLayout({
         <head>
             <link rel="icon" href="/favicon.png" sizes="any"/>
         </head>
-        <body className={`antialiased font-[Arial]`}>
+        <body className={`antialiased ${robotoFont.className} tracking-wide`}>
             <StatefulLayout>
                 {children}
             </StatefulLayout>

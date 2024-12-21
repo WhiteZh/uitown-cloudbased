@@ -1,0 +1,70 @@
+openapi: 3.1.0
+info:
+  title: uitown-cloudbased
+  version: 0.1.0
+paths:
+  /api/users/login:
+    get:
+      summary: Login as the user
+      description: |
+        Retrieve first-party user information using email and hashed password.
+      parameters:
+        - name: email
+          in: query
+          schema:
+            type: string
+          required: true
+        - name: password_hashed
+          in: query
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: Email and hashed password match. No error occurred.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  name:
+                    type: string
+                  aboutme:
+                    type: string
+                  icon:
+                    type:
+                      - 'null'
+                      - string
+        400:
+          description: Bad request. Missing one or multiple required query parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        "401":
+          description: Email does not exist or miss-match with hashed password.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        "500":
+          $ref: "#/components/responses/500InternalError"
+
+components:
+  responses:
+    500InternalError:
+      description: Internal server error occurred.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/errorMessage"
+  schemas:
+    errorMessage:
+      type: object
+      properties:
+        error:
+          type: string
+          description: |
+            Error message regarding the error.

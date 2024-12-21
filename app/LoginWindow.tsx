@@ -1,17 +1,47 @@
 'use client';
 
-import {useRef} from "react";
+import {use, useEffect, useRef} from "react";
 import {zhiMangXingFont} from "@/lib/fonts";
+import {sha256} from "js-sha256";
+import {NotificationsAndSetNotificationsContext, UserAndSetUserContext} from "@/lib/contexts";
+import {fetchUserId, fetchUserInfo} from "@/lib/fetch-api/users-api";
 
-export default function LoginWindow({onCloseAction}: {
+export default function LoginWindow({onCloseAction, isFocusEmailInput = true}: {
     onCloseAction: () => void,
+    isFocusEmailInput?: boolean,
 }) {
     const emailInput = useRef<HTMLInputElement>(null);
     const passwordInput = useRef<HTMLInputElement>(null);
 
-    function login() {
+    async function login() {
+        if (emailInput.current === null || passwordInput.current === null)
+            return;
 
+        const password_hashed = sha256(passwordInput.current.value);
+
+        const fetchUserIDRes = await fetchUserId(emailInput.current.value.trim(), password_hashed);
+        if (fetchUserIDRes instanceof Error) {
+            const {notifications, setNotifications} = use(NotificationsAndSetNotificationsContext);
+            setNotifications([...notifications, {message: `Error: ${fetchUserIDRes.message}`, color: "red"}]);
+            return;
+        }
+
+        const fetchUserInfoRes = await fetchUserInfo(fetchUserIDRes, password_hashed);
+        if (fetchUserInfoRes instanceof Error) {
+            const {notifications, setNotifications} = use(NotificationsAndSetNotificationsContext);
+            setNotifications([...notifications, {message: `Error: ${fetchUserInfoRes.message}`, color: "red"}]);
+            return;
+        }
+
+        const {setUser} = use(UserAndSetUserContext);
+        setUser(fetchUserInfoRes);
     }
+
+    useEffect(() => {
+        if (isFocusEmailInput) {
+            emailInput.current?.focus();
+        }
+    });
 
     return (
         <>
@@ -25,14 +55,14 @@ export default function LoginWindow({onCloseAction}: {
                         <input placeholder="username/email"
                                className="h-11 w-80 rounded-full my-1.5 ms-1.5 outline-0 ps-0.5 font-mono text-xs text-center"
                                ref={emailInput}
-                               onKeyDown={e => e.key == 'Enter' && passwordInput.current?.focus()}
+                               onKeyDown={e => e.key === 'Enter' && passwordInput.current?.focus()}
                         />
                     </div>
                     <div className="flex flex-row mb-3 justify-center">
                         <input placeholder="password" type="password"
                                className="h-11 w-80 rounded-full my-1.5 ms-1.5 outline-0 ps-0.5 font-mono text-xs text-center"
                                ref={passwordInput}
-                               onKeyDown={e => e.key == 'Enter' && login()}
+                               onKeyDown={e => e.key === 'Enter' && login()}
                         />
                     </div>
                     <button
