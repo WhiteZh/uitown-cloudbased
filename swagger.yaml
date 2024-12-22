@@ -3,7 +3,7 @@ info:
   title: uitown-cloudbased
   version: 0.1.0
 paths:
-  /api/users/login:
+  /api/user:
     get:
       summary: Login as the user
       description: |

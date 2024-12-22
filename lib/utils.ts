@@ -36,3 +36,11 @@ export function crudWrapper<T>(method: (request: Request) => Promise<T | ErrorWi
         return Response.json(result);
     }
 }
+
+export const wrapBadResponse = (resBody: unknown): Error => match(resBody)
+    .with({
+        error: P.select(P.string)
+    }, err => Error(err))
+    .otherwise(() => Error("Bad request"));
+
+export const createUnexpectedServerResponseError = () => Error("Unexpected response from server");

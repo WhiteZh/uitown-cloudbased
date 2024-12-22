@@ -3,8 +3,8 @@
 import {use, useEffect, useRef} from "react";
 import {zhiMangXingFont} from "@/lib/fonts";
 import {sha256} from "js-sha256";
-import {NotificationsAndSetNotificationsContext, UserAndSetUserContext} from "@/lib/contexts";
-import {fetchUserId, fetchUserInfo} from "@/lib/fetch-api/users-api";
+import {GlobalContext} from "@/lib/contexts";
+import {fetchUserInfo} from "@/lib/fetch-api/user-api";
 
 export default function LoginWindow({onCloseAction, isFocusEmailInput = true}: {
     onCloseAction: () => void,
@@ -13,8 +13,7 @@ export default function LoginWindow({onCloseAction, isFocusEmailInput = true}: {
     const emailInput = useRef<HTMLInputElement>(null);
     const passwordInput = useRef<HTMLInputElement>(null);
 
-    const {notifications, setNotifications} = use(NotificationsAndSetNotificationsContext);
-    const {setUser} = use(UserAndSetUserContext);
+    const {createNotification, updateUser} = use(GlobalContext);
 
     async function login() {
         if (emailInput.current === null || passwordInput.current === null)
@@ -22,26 +21,22 @@ export default function LoginWindow({onCloseAction, isFocusEmailInput = true}: {
 
         const password_hashed = sha256(passwordInput.current.value);
 
-        const fetchUserIDRes = await fetchUserId(emailInput.current.value.trim(), password_hashed);
-        if (fetchUserIDRes instanceof Error) {
-            setNotifications([...notifications, {message: `Error: ${fetchUserIDRes.message}`, color: "red", time: Date.now()}]);
-            return;
-        }
-
-        const fetchUserInfoRes = await fetchUserInfo(fetchUserIDRes, password_hashed);
+        const fetchUserInfoRes = await fetchUserInfo(emailInput.current.value, password_hashed);
         if (fetchUserInfoRes instanceof Error) {
-            setNotifications([...notifications, {message: `Error: ${fetchUserInfoRes.message}`, color: "red", time: Date.now()}]);
+            createNotification(`Error: ${fetchUserInfoRes.message}`, {color: "red"});
             return;
         }
 
-        setUser(fetchUserInfoRes);
+        createNotification("Successfully logged in");
+        updateUser(fetchUserInfoRes);
+        onCloseAction();
     }
 
     useEffect(() => {
         if (isFocusEmailInput) {
             emailInput.current?.focus();
         }
-    });
+    }, [isFocusEmailInput]);
 
     return (
         <>

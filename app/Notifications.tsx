@@ -18,7 +18,7 @@ export default function Notifications({notifications, setNotificationsAction}: {
                     {e.message}
                     <i
                         className="bi bi-x hover:text-[#333] cursor-pointer absolute right-2"
-                        onClick={() => setNotificationsAction(notifications.filter(x => x.message != e.message))}
+                        onClick={() => setNotificationsAction(notifications.filter(x => x.time != e.time))}
                     />
                 </div>
             ))}

@@ -1,8 +1,7 @@
 'use client';
 
 import {ReactNode, useEffect, useState} from "react";
-import {Notification, User, UserAndSetUserContext} from "@/lib/contexts";
-import {NotificationsAndSetNotificationsContext} from "@/lib/contexts";
+import {GlobalContext, Notification, User} from "@/lib/contexts";
 import Notifications from "@/app/Notifications";
 import {NavigationBar} from "@/app/NavigationBar";
 import LoginWindow from "@/app/LoginWindow";
@@ -27,7 +26,7 @@ export default function StatefulLayout({children}: {
                 name: P.string,
                 email: P.string,
                 password_hashed: P.string,
-                description: P.string,
+                aboutme: P.string,
                 icon: P.union(null, P.string)
             }), it => it)
             .otherwise((it) => {
@@ -44,7 +43,7 @@ export default function StatefulLayout({children}: {
         setUser(userInfo);
     }, []);
 
-    const updateUserInfo = (newUser: User | null) => {
+    function updateUser(newUser: User | null): void {
         if (newUser !== null) {
             sessionStorage.setItem("user", JSON.stringify(newUser));
         } else {
@@ -53,20 +52,29 @@ export default function StatefulLayout({children}: {
         setUser(newUser);
     }
 
-    return (
-        <NotificationsAndSetNotificationsContext.Provider value={{notifications, setNotifications}}>
-            <UserAndSetUserContext.Provider value={{user, setUser: updateUserInfo}}>
-                <div
-                    className="bg-[linear-gradient(135deg,black,#737373)] min-h-screen max-h-screen overflow-auto [scrollbar-width: none] flex flex-col">
-                    {showWindow && <LoginWindow onCloseAction={() => setShowWindow(false)}/>}
-                    <Notifications notifications={notifications} setNotificationsAction={setNotifications}/>
-                    <NavigationBar onOpenLoginWindowAction={() => setShowWindow(true)}/>
-                    <div className={`flex-grow overflow-auto flex flex-col`}>
+    function createNotification(message: string, options?: {color?: string}): void {
+        const notification: Notification = {message, time: Date.now()};
 
-                        {children}
-                    </div>
+        if (options) {
+            if (options.color) {
+                notification.color = options.color;
+            }
+        }
+
+        setNotifications([...notifications, notification]);
+    }
+
+    return (
+        <GlobalContext.Provider value={{user, updateUser, notifications, createNotification}}>
+            <div
+                className="bg-[linear-gradient(135deg,black,#737373)] min-h-screen max-h-screen overflow-auto [scrollbar-width: none] flex flex-col">
+                {showWindow && <LoginWindow onCloseAction={() => setShowWindow(false)}/>}
+                <Notifications notifications={notifications} setNotificationsAction={setNotifications}/>
+                <NavigationBar onOpenLoginWindowAction={() => setShowWindow(true)}/>
+                <div className={`flex-grow overflow-auto flex flex-col`}>
+                    {children}
                 </div>
-            </UserAndSetUserContext.Provider>
-        </NotificationsAndSetNotificationsContext.Provider>
+            </div>
+        </GlobalContext.Provider>
     );
 }
