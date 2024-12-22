@@ -2,6 +2,7 @@ import { createContext, Dispatch } from "react";
 
 export type Notification = {
     message: string,
+    time: number,
     color?: string,
 }
 
@@ -21,5 +22,5 @@ export const NotificationsAndSetNotificationsContext = createContext<{
 
 export const UserAndSetUserContext = createContext<{
     user: User | null,
-    setUser: Dispatch<User | null>
+    setUser: (user: User | null) => void
 }>(undefined as any);

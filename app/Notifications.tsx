@@ -13,7 +13,7 @@ export default function Notifications({notifications, setNotificationsAction}: {
                 <div
                     className={`text-center py-1.5 px-0 opacity-80 relative`}
                     style={{backgroundColor: e.color || 'lightblue'}}
-                    key={e.message}
+                    key={e.time}
                 >
                     {e.message}
                     <i

@@ -13,6 +13,9 @@ export default function LoginWindow({onCloseAction, isFocusEmailInput = true}: {
     const emailInput = useRef<HTMLInputElement>(null);
     const passwordInput = useRef<HTMLInputElement>(null);
 
+    const {notifications, setNotifications} = use(NotificationsAndSetNotificationsContext);
+    const {setUser} = use(UserAndSetUserContext);
+
     async function login() {
         if (emailInput.current === null || passwordInput.current === null)
             return;
@@ -21,19 +24,16 @@ export default function LoginWindow({onCloseAction, isFocusEmailInput = true}: {
 
         const fetchUserIDRes = await fetchUserId(emailInput.current.value.trim(), password_hashed);
         if (fetchUserIDRes instanceof Error) {
-            const {notifications, setNotifications} = use(NotificationsAndSetNotificationsContext);
-            setNotifications([...notifications, {message: `Error: ${fetchUserIDRes.message}`, color: "red"}]);
+            setNotifications([...notifications, {message: `Error: ${fetchUserIDRes.message}`, color: "red", time: Date.now()}]);
             return;
         }
 
         const fetchUserInfoRes = await fetchUserInfo(fetchUserIDRes, password_hashed);
         if (fetchUserInfoRes instanceof Error) {
-            const {notifications, setNotifications} = use(NotificationsAndSetNotificationsContext);
-            setNotifications([...notifications, {message: `Error: ${fetchUserInfoRes.message}`, color: "red"}]);
+            setNotifications([...notifications, {message: `Error: ${fetchUserInfoRes.message}`, color: "red", time: Date.now()}]);
             return;
         }
 
-        const {setUser} = use(UserAndSetUserContext);
         setUser(fetchUserInfoRes);
     }
 
