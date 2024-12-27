@@ -76,6 +76,8 @@ paths:
                   aboutme:
                     type: string
                   icon:
+                    description: |
+                      Base64 URL.
                     type:
                       - 'null'
                       - string

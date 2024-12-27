@@ -55,7 +55,7 @@ export const GET = crudWrapper<{
 
     const icon: string | null | ErrorWithCode = match({icon: userInfo.icon, icon_type: userInfo.icon_type})
         .with({icon: null, icon_type: null}, () => null)
-        .with({icon: P.select('icon', P.instanceOf(Buffer)), icon_type: P.select('icon_type', P.string)},
+        .with({icon: P.instanceOf(Buffer), icon_type: P.string},
             ({icon, icon_type}) => `data:image/${icon_type};base64,${icon.toString('base64')}`)
         .otherwise(() => new ErrorWithCode("Unexpected DB response", 500));
 
