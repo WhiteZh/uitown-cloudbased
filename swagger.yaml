@@ -20,6 +20,8 @@ paths:
           required: true
       responses:
         200:
+          description: |
+            Valid request. No error occured.
           content:
             application/json:
               schema:
@@ -33,6 +35,13 @@ paths:
                       type: string
                     css:
                       type: string
+        400:
+          description: |
+            Bad request. One or multiple ids are not integer.
+          content:
+            appication/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
         500:
           $ref: "#/components/responses/500InternalError"
 
