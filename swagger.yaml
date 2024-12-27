@@ -39,7 +39,7 @@ paths:
           description: |
             Bad request. One or multiple ids are not integer.
           content:
-            appication/json:
+            application/json:
               schema:
                 $ref: "#/components/schemas/errorMessage"
         500:
