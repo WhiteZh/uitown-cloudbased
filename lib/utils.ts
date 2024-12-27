@@ -44,3 +44,5 @@ export const wrapBadResponse = (resBody: unknown): Error => match(resBody)
     .otherwise(() => Error("Bad request"));
 
 export const createUnexpectedServerResponseError = () => Error("Unexpected response from server");
+
+export const createUnexpectedServerResponseErrorWithCode = () => new ErrorWithCode(createUnexpectedServerResponseError(), 500);

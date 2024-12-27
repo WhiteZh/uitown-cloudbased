@@ -3,6 +3,39 @@ info:
   title: uitown-cloudbased
   version: 0.1.0
 paths:
+  /api/css:
+    get:
+      summary: Fetch CSS(s)
+      description: |
+        Retrieve CSS(s) info(s) using id(s)
+      parameters:
+        - name: id
+          in: query
+          schema:
+            oneOf:
+              - type: number
+              - type: array
+                items:
+                  type: number
+          required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                    html:
+                      type: string
+                    css:
+                      type: string
+        500:
+          $ref: "#/components/responses/500InternalError"
+
   /api/user:
     get:
       summary: Login as the user
