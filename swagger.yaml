@@ -3,11 +3,51 @@ info:
   title: uitown-cloudbased
   version: 0.1.0
 paths:
+  /api/css/valid_ids:
+    get:
+      summary: Fetch Valid CSS IDs
+      description: |
+        Retrieve valid/existing CSS ids; conditions/filters can be applied.
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: number
+        - name: offset
+          in: query
+          schema:
+            type: number
+        - name: author_id
+          in: query
+          schema:
+            type: number
+        - name: order_by
+          in: query
+          schema:
+            type: string
+            enum: []
+      responses:
+        200:
+          description: All good. No Error occurred.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: number
+        400:
+          description: Bad request. Check query parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorMessage"
+        500:
+          $ref: "#/components/responses/500InternalError"
   /api/css:
     get:
       summary: Fetch CSS(s)
       description: |
-        Retrieve CSS(s) info(s) using id(s)
+        Retrieve CSS(s) info(s) using id(s).
       parameters:
         - name: id
           in: query
